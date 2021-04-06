@@ -1,6 +1,7 @@
 <template>
     <div class="interface-panel">
         <div class="text-panel">
+            <div class="relation" style="font-weight: bold">Relation: <span style="border: 1px solid #aaa;padding: 5px">{{text['relation']}}</span></div>
             <div class="text">
                 <span v-for="(token, token_idx) in text['token']" :key="token_idx" style="position: relative"
                       v-bind:data-id="token_idx"

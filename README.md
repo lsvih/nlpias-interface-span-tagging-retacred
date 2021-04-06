@@ -1,4 +1,4 @@
-# nlpias-interface-classification
+# nlpias-interface-span-tagging-retacred
 
 Template for building annotation interface of [nlpias](https://github.com/lsvih/nlpias)
 
