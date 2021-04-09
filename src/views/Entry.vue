@@ -1,13 +1,19 @@
 <template>
     <div class="interface-panel">
         <div class="text-panel">
-            <div class="relation" style="font-weight: bold">Relation: <span style="border: 1px solid #aaa;padding: 5px">{{text['relation']}}</span></div>
+            <div class="relation" style="font-weight: bold">Relation: <span style="border: 1px solid #aaa;padding: 5px">{{
+                    text['relation']
+                }}</span>
+            </div>
             <div class="text">
                 <span v-for="(token, token_idx) in text['token']" :key="token_idx" style="position: relative"
                       v-bind:data-id="token_idx"
-                      :class="[entity_type(token_idx), trigger_clazz(token_idx)]">{{ replace(token) }} <span class="sup"
-                                                                                                    :class="entity_type(token_idx)"
-                                                                                                    v-if="token_idx === text.subj_start || token_idx === text.obj_start">{{ entity_type(token_idx) }}</span>
+                      :class="[entity_type(token_idx), trigger_clazz(token_idx)]">{{ replace(token) }} <span
+                    class="sup" :class="entity_type(token_idx)"
+                    v-if="token_idx === text.subj_start || token_idx === text.obj_start">{{
+                        token_idx === text.subj_start ? 'SUBJ' : 'OBJ'
+                    }}:<b>{{ entity_type(token_idx) }}</b>
+                    </span>
                 </span>
             </div>
         </div>
@@ -28,7 +34,8 @@
                            @click.native="openDocument"/>
             <setting-icon @click.native="show_config = true"/>
         </div>
-        <a-progress :percent="idx / total * 100" :show-info="false" class="progress" :stroke-width="14"
+        <div class="indicator">{{ idx + 1 }} / {{ total }}</div>
+        <a-progress :percent="( idx + 1 ) / total * 100" :show-info="false" class="progress" :stroke-width="14"
                     stroke-color="blue" stroke-linecap="square"/>
         <config-panel :visible="show_config" :labels="labels" :shortcuts="shortcuts" @close="show_config = false"
                       @save="changeHotkey"/>
@@ -156,8 +163,8 @@ export default {
         deleteLabel() {
             this.span = []
         },
-        replace(token){
-            switch(token){
+        replace(token) {
+            switch (token) {
                 case '-LRB-':
                     return '('
                 case '-RRB-':
@@ -273,6 +280,21 @@ export default {
     user-select: none;
     top: -30px;
     left: 0;
+}
+
+.indicator {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    z-index: 10;
+    user-select: none;
+    color: #ddd;
+    font-size: 30px;
+    transition-duration: .5s;
+}
+
+.indicator:hover {
+    color: #000
 }
 </style>
 
