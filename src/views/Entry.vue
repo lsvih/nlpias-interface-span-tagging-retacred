@@ -157,6 +157,7 @@ export default {
                 let end = Number(selector.endContainer.parentElement.dataset.id)
                 console.log([start, end])
                 this.span = [start, end]
+                this.$eventBus.emit('labelData[Annotation]', [this.task_id, this.idx, this.span])
                 window.getSelection().empty()
             }
         },
