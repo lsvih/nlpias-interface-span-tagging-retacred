@@ -70,3 +70,17 @@ export default {
         this.$eventBus.emit('openDocument[Annotation]', this.information.project.document)
     }
 }
+
+export function throttle(fn, delay) {
+    let last = 0
+    return function () {
+        let context = this
+        let args = arguments
+        let now = +new Date()
+
+        if (now - last >= delay) {
+            last = now
+            fn.apply(context, args)
+        }
+    }
+}

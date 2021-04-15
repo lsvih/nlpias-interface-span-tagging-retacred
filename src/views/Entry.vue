@@ -50,6 +50,7 @@ import SettingIcon from '../components/icons/setting'
 import BackspaceIcon from '../components/icons/backspace'
 import ConfigPanel from '../components/ConfigPanel'
 import commonMethods from '../common'
+import {throttle} from '@/common'
 
 /*
 Events who end with [Annotation] is the event for annotaion panel, would be destroy while closing the annotation interface.
@@ -134,6 +135,16 @@ export default {
                 this.span = label || []
             })
         },
+        nextData: throttle(function () {
+            this.$eventBus.emit('labelData[Annotation]', [this.task_id, this.idx, this.span])
+            if (this.idx === this.information.task.size - 1) {
+                this.$message.info('It\'s already the last data.')
+                return
+            }
+            this.idx += 1
+            this.getData(this.idx)
+            window.getSelection().empty()
+        }, 1000),
         handleLabel(label) {
             if (label === 'Previous') { // get previous data
                 if (this.idx === 0) { // prevent event while on first data
@@ -143,14 +154,7 @@ export default {
                 this.idx -= 1
                 this.getData(this.idx)
             } else if (label === 'Next') {
-                this.$eventBus.emit('labelData[Annotation]', [this.task_id, this.idx, this.span])
-                if (this.idx === this.information.task.size - 1) {
-                    this.$message.info('It\'s already the last data.')
-                    return
-                }
-                this.idx += 1
-                this.getData(this.idx)
-                window.getSelection().empty()
+                this.nextData()
             } else {
                 let selector = window.getSelection().getRangeAt(0)
                 let start = Number(selector.startContainer.parentElement.dataset.id)
