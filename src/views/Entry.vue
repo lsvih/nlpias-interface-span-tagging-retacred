@@ -30,6 +30,7 @@
             </button>
         </div>
         <div class="config-btn">
+            <alarm-icon @click.native="reportId"/>
             <document-icon v-if="!!information.project && (!!information.project.document)"
                            @click.native="openDocument"/>
             <setting-icon @click.native="show_config = true"/>
@@ -48,6 +49,7 @@ import {schemeSet2, schemeSet3} from 'd3-scale-chromatic'
 import DocumentIcon from '../components/icons/document'
 import SettingIcon from '../components/icons/setting'
 import BackspaceIcon from '../components/icons/backspace'
+import AlarmIcon from '../components/icons/alarm'
 import ConfigPanel from '../components/ConfigPanel'
 import commonMethods from '../common'
 import {throttle} from '@/common'
@@ -67,7 +69,7 @@ sentData(text, ?predict) 推送回 getData 请求的数据与预测
 
 export default {
     name: 'Entry',
-    components: {DocumentIcon, SettingIcon, BackspaceIcon, ConfigPanel},
+    components: {DocumentIcon, SettingIcon, BackspaceIcon, AlarmIcon, ConfigPanel},
     data() {
         return {
             title: 'Interface',
@@ -185,6 +187,15 @@ export default {
                 default:
                     return token
             }
+        },
+        reportId(){
+            let aux = document.createElement("input");
+            aux.setAttribute("value", this.text['id'])
+            document.body.appendChild(aux)
+            aux.select()
+            document.execCommand("copy")
+            document.body.removeChild(aux)
+            this.$message.info('The data id has been copied to clipboard, please contact administrator.')
         }
     }
 }
